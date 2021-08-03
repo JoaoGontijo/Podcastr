@@ -7,6 +7,8 @@ import ptBR from 'date-fns/locale/pt-BR';
 import { convertToTimeString } from "../utils/convertDurationToTimeString";
 
 import styles from './home.module.scss';
+import { useContext } from "react";
+import { PlayerContext } from "../contexts/PlayerContext";
 
 type Episode = {
   id: string;
@@ -26,7 +28,8 @@ type HomeProps = {
 }
 
 export default function Home({latestEpisodes, allEpisodes}: HomeProps) {
-    
+  const { play } = useContext(PlayerContext)
+
   return (
     <div className={styles.homepage}>
     <section className={styles.latestEpisodes}>
@@ -37,14 +40,14 @@ export default function Home({latestEpisodes, allEpisodes}: HomeProps) {
             <li key={episode.id}>
               <Image width={192} height={192} src={episode.thumbnail} alt={episode.title} objectFit="cover"/>
                 <div className={styles.episodeDetails}>
-                  <Link href={`/episode/${episode.id}`}>
+                  <Link href={`/episodes/${episode.id}`}>
                     <a>{episode.title}</a>
                   </Link>
                   <p>{episode.members}</p>
                   <span>{episode.publishedAt}</span>
                   <span>{episode.durationAsString}</span>
                 </div>
-                <button type="button">
+                <button type="button" onClick={() => play(episode)}>
                   <img src="/play-green.svg" alt="Tocar episódio"/>
                 </button>
             </li>
@@ -73,7 +76,7 @@ export default function Home({latestEpisodes, allEpisodes}: HomeProps) {
                     <Image width={120} height={120} src={episode.thumbnail} alt={episode.title} objectFit="cover" />
                   </td>
                   <td>
-                    <Link href={`episode/${episode.id}`}>
+                    <Link href={`episodes/${episode.id}`}>
                       <a>{episode.title}</a>
                     </Link>
                   </td>
